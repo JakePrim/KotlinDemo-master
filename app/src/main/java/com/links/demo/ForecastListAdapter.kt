@@ -1,37 +1,61 @@
 package com.links.demo
 
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.links.demo.ForecastListAdapter.ViewHolder
+import com.links.demo.domain.Forecast
 import com.links.demo.domain.ForecastList
+import com.links.demo.listener.OnItemClickListener
+import com.links.demo.listener.ctx
+import com.squareup.picasso.Picasso
+import org.jetbrains.anko.find
+import kotlin.links.com.demo.R
 
 /**
  * Created by linksus on 6/7 0007.
  */
-class ForecastListAdapter(val weekForecast: ForecastList) : RecyclerView.Adapter<ViewHolder>() {
+ class ForecastListAdapter(val weekForecast: ForecastList, val itemClick: (Forecast) -> Unit) : RecyclerView.Adapter<ViewHolder>() {
     override fun getItemCount(): Int {
-        return weekForecast.dailyForecast.size
+        return weekForecast.size()
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        if (holder != null) {
-            /**
-             * with是一个非常有用的函数，它包含在Kotlin的标准库中。
-             * 它接收一个对象和一个扩展函数作为它的参数，然后使这个对象扩展这个函数。
-             * 这表示所有我们在括号中编写的代码都是作为对象（第一个参数）的一个扩展函数，
-             * 我们可以就像作为this一样使用所有它的public方法和属性。
-             * 当我们针对同一个对象做很多操作的时候这个非常有利于简化代码。
-             */
-            with(weekForecast.dailyForecast[position]) {
-                holder.textview.text = "$date - $description - $high/$low"
-            }
-        }
+        holder?.bindForecast(weekForecast[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        return ViewHolder(TextView(parent?.context))
+        val view = LayoutInflater.from(parent!!.ctx).inflate(R.layout.item_forecast, parent,false)
+        return ViewHolder(view, itemClick)
     }
 
-    class ViewHolder(val textview: TextView) : RecyclerView.ViewHolder(textview)
+    class ViewHolder(view: View, val itemClick:(Forecast) -> Unit) : RecyclerView.ViewHolder(view) {
+        private val iconView: ImageView  = view.find(R.id.icon)
+        private val dateView: TextView = view.find(R.id.date)
+        private val descriptionView: TextView = view.find(R.id.description)
+        private val maxTemperatureView: TextView = view.find(R.id.maxTemperature)
+        private val minTemperatureView: TextView =  view.find(R.id.minTemperature)
+
+//        init {
+//            iconView = view.find(R.id.icon)
+//            dateView = view.find(R.id.date)
+//            descriptionView = view.find(R.id.description)
+//            maxTemperatureView = view.find(R.id.maxTemperature)
+//            minTemperatureView = view.find(R.id.minTemperature)
+//        }
+
+        fun bindForecast(forecast: Forecast) {
+            with(forecast) {
+                dateView.text = date
+                descriptionView.text = description
+                maxTemperatureView.text = "${high.toString()}"
+                minTemperatureView.text = "${low.toString()}"
+                Picasso.with(itemView.ctx).load(iconUrl).into(iconView)
+                itemView.setOnClickListener { itemClick(this) }
+            }
+        }
+    }
 }

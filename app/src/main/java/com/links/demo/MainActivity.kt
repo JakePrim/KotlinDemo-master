@@ -4,13 +4,16 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
+import com.links.demo.domain.Forecast
 import com.links.demo.domain.ForecastList
+import com.links.demo.listener.OnItemClickListener
 import com.links.demo.network.RequestForecastCommand
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 import kotlin.links.com.demo.R
 import kotlin.jvm.javaClass
 
@@ -42,7 +45,9 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun updateUI(weekForecast: ForecastList) {
-        forecast_list.adapter = ForecastListAdapter(weekForecast)
+        forecast_list.adapter = ForecastListAdapter(weekForecast){
+            toast(it.description)
+        }
     }
 
     private fun initRecycleList() {
@@ -62,6 +67,10 @@ class MainActivity : AppCompatActivity() {
             "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
             "Sun 6/29 - Sunny - 20/7"
     )
+
+    private fun list() {
+
+    }
 
     fun add(x: Int, y: Int): Int {
         return x + y
@@ -120,10 +129,10 @@ class MainActivity : AppCompatActivity() {
          */
         val s = "Example"
         val c2 = s[2]//这是一个字符‘a’
-        print("$c2 bitwiseOr:$bitwiseOr bitwiseAnd:$bitwiseAnd")
+        println("$c2 bitwiseOr:$bitwiseOr bitwiseAnd:$bitwiseAnd")
         //迭代String
         for (c2 in s) {
-            print("$c2 bitwiseOr:$bitwiseOr bitwiseAnd:$bitwiseAnd")
+            println("$c2 bitwiseOr:$bitwiseOr bitwiseAnd:$bitwiseAnd")
         }
 
     }

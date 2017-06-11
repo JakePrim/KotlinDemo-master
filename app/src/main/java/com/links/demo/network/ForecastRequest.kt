@@ -17,10 +17,10 @@ import java.net.URL
  */
 class ForecastRequest(val citycode: String) {
     companion object {
-        private val APPID = "15646a06818f61f7b8d7823ca833e1ce"
-        private val BASE_URL = "http://api.openweathermap.org/data/2.5/" +
-                "forecast/daily?mode=json&units=metric&cnt=7"
-        private val COMPLETE_URL = "$BASE_URL&appid=$APPID&q="
+//        private val APPID = "15646a06818f61f7b8d7823ca833e1ce"
+//        private val BASE_URL = "http://api.openweathermap.org/data/2.5/" +
+//                "forecast/daily?mode=json&units=metric&cnt=7"
+//        private val COMPLETE_URL = "$BASE_URL&appid=$APPID&q="
     }
 
     fun execute(): ForecastResult {
