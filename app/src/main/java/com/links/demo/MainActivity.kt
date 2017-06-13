@@ -31,12 +31,15 @@ class MainActivity : AppCompatActivity() {
 //        jibenleixing()
     }
 
+    private fun initRecycleList() {
+        forecast_list.layoutManager = LinearLayoutManager(this)
+    }
+
     override fun onResume() {
         super.onResume()
         getData()
     }
 
-    var url = "http://samples.openweathermap.org/data/2.5/forecast?q=beijing,ZH&appid=b1b15e88fa797225412429c1c50c122a1"
     private fun getData() = async(UI) {
         val result = bg { RequestForecastCommand("94043").execute() } //在后台处理网络请求
         longToast("getDataSuccess")
@@ -45,15 +48,11 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun updateUI(weekForecast: ForecastList) {
-        forecast_list.adapter = ForecastListAdapter(weekForecast){
+        forecast_list.adapter = ForecastListAdapter(weekForecast) {
             toast(it.description)
         }
     }
 
-    private fun initRecycleList() {
-        forecast_list.layoutManager = LinearLayoutManager(this)
-//        forecast_list.adapter = ForecastListAdapter(items)
-    }
 
     /**
      * 得到一个 list
