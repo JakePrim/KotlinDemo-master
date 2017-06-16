@@ -1,5 +1,6 @@
 package com.links.demo
 
+import android.database.sqlite.SQLiteDatabase
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -53,6 +54,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    /**
+     * ManagedSqliteOpenHelper
+     * 数据库
+     */
+//    public fun <T> use(f: SQLiteDatabase.() -> T): T{
+//        return openDataB
+//    }
 
     /**
      * 得到一个 list
