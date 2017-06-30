@@ -13,6 +13,6 @@ import java.util.logging.LogManager
  * ================================================
  */
 interface ForecastDataSource {
-    fun requestForecastByZipCode(cityCode: Long, date: String): ForecastList?
+    fun requestForecastByZipCode(cityCode: Long, date: Long): ForecastList?
     fun requesyDayForecastByZipCode(id: Long): Forecast?
 }

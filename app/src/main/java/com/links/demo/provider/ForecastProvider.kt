@@ -29,8 +29,9 @@ class ForecastProvider(val sources: List<ForecastDataSource> = ForecastProvider.
     fun requestByZipCode(zipCode: Long, days: Int): ForecastList = sources.firstResult { requestSource(it, days, zipCode) }
 
     fun requestSource(source: ForecastDataSource, days: Int, zipCode: Long): ForecastList? {
-        val res = source.requestForecastByZipCode(zipCode, convertDate(todayTimeSpan()))
-        return if (res != null && res.size() >= days) res else null
+        val date: Long = 1498852800
+        val res = source.requestForecastByZipCode(zipCode, date)
+        return if (res != null) res else null
     }
 
     private fun convertDate(date: Long): String {

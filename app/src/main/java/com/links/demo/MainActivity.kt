@@ -1,22 +1,17 @@
 package com.links.demo
 
-import android.database.sqlite.SQLiteDatabase
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
-import com.links.demo.domain.Forecast
 import com.links.demo.domain.ForecastList
-import com.links.demo.listener.OnItemClickListener
 import com.links.demo.network.RequestForecastCommand
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
-import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
 import kotlin.links.com.demo.R
-import kotlin.jvm.javaClass
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,7 +33,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun getData() = async(UI) {
         val result = bg { RequestForecastCommand(94043).execute() } //在后台处理网络请求
-        longToast("getDataSuccess")
         updateUI(result.await())
     }
 

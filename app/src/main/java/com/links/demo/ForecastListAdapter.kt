@@ -10,6 +10,8 @@ import com.links.demo.domain.ForecastList
 import com.links.demo.listener.ctx
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_forecast.view.*
+import java.text.DateFormat
+import java.util.*
 import kotlin.links.com.demo.R
 
 /**
@@ -33,13 +35,20 @@ class ForecastListAdapter(val weekForecast: ForecastList, val itemClick: (Foreca
         fun bindForecast(forecast: Forecast) {
 
             with(forecast) {
-                itemView.date.text = date
+                itemView.date.text = convertDate(date)
                 itemView.description.text = description
-                itemView.maxTemperature.text = "${high.toString()}"
-                itemView.minTemperature.text = "${low.toString()}"
+                itemView.maxTemperature.text = "${high}%C"
+                itemView.minTemperature.text = "${low}%C"
                 Picasso.with(itemView.ctx).load(iconUrl).into(itemView.icon)
                 itemView.setOnClickListener { itemClick(this) }
             }
         }
+
+        private fun convertDate(date: Long): String {
+            val df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault())
+            return df.format(date * 1000)
+        }
     }
+
+
 }

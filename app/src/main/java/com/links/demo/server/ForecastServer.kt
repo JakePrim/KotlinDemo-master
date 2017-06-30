@@ -1,7 +1,6 @@
 package com.links.demo.server
 
 import com.links.demo.db.ForecastDb
-import com.links.demo.domain.Forecast
 import com.links.demo.domain.ForecastDataMapper
 import com.links.demo.domain.ForecastDataSource
 import com.links.demo.domain.ForecastList
@@ -18,11 +17,10 @@ import com.links.demo.network.ForecastRequest
  * 修订历史：
  * ================================================
  */
-class ForecastServer(val dbDataMapper: ForecastDataMapper = ForecastDataMapper(), val forecastDb: ForecastDb = ForecastDb()) :ForecastDataSource{
-    override fun requestForecastByZipCode(cityCode: Long, date: String): ForecastList? {
+class ForecastServer(val dbDataMapper: ForecastDataMapper = ForecastDataMapper(), val forecastDb: ForecastDb = ForecastDb()) : ForecastDataSource {
+    override fun requestForecastByZipCode(cityCode: Long, date: Long): ForecastList? {
         val result = ForecastRequest(cityCode.toString()).execute()
-        println(result.toString())
-        val forecatlist = dbDataMapper.convertFromDataModel(result)
+        val forecatlist = dbDataMapper.convertFromDataModel(result, cityCode)
         forecastDb.saveForecast(forecatlist)
         return forecastDb.requestForecastByZipCode(cityCode, date)
     }

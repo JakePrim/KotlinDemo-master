@@ -41,18 +41,20 @@ class ForecastDb(val forecastDbHelper: ForecastDBHelper = ForecastDBHelper.insta
     /**
      * 根据城市 和 时间范围来查询数据库中的天气信息列表
      */
-    override fun requestForecastByZipCode(cityCode: Long, date: String) = forecastDbHelper.use {
-        val dailyRequest = "${DayForecastTable.CITY_ID} = ? AND ${DayForecastTable.DATE} >= ? "
+    override fun requestForecastByZipCode(cityCode: Long, date: Long) = forecastDbHelper.use {
+        println("cityCode:" + cityCode + " date:" + date)
+        //${DayForecastTable.CITY_ID} = ? AND  cityCode.toString(),
+        val dailyRequest = "${DayForecastTable.DATE} >= ? "
         val dailyForecat = select(DayForecastTable.NAME)
-                .whereSimple(dailyRequest, cityCode.toString(), date)
+                .whereSimple(dailyRequest, date.toString())
                 .parseList { DayForecast(HashMap(it)) }
 
         val city = select(CityForecastTable.NAME)
                 .whereSimple("${CityForecastTable.ID} = ? ", cityCode.toString())
                 .parseOpt { CityForecast(HashMap(it), dailyForecat) }
+
         println("查询数据")
         city?.let { dbDataMapper.convertToDomain(it) }
-
     }
 
     /**

@@ -2,8 +2,6 @@ package com.links.demo.domain
 
 import com.links.demo.data.Forecast
 import com.links.demo.data.ForecastResult
-import java.text.DateFormat
-import java.util.*
 import com.links.demo.domain.Forecast as ModelForecast
 
 /**
@@ -14,8 +12,8 @@ import com.links.demo.domain.Forecast as ModelForecast
  * 数据处理类
  */
 class ForecastDataMapper {
-    fun convertFromDataModel(forecast: ForecastResult): ForecastList = with(forecast) {
-        return ForecastList(city.id, city.name, city.country, convertForecastListToDomain(list))
+    fun convertFromDataModel(forecast: ForecastResult, cityCode: Long): ForecastList = with(forecast) {
+        return ForecastList(cityCode, city.name, city.country, convertForecastListToDomain(list))
     }
 
 
@@ -31,16 +29,11 @@ class ForecastDataMapper {
     }
 
     private fun convertForecastItemToDomain(forecast: Forecast): ModelForecast = with(forecast) {
-        return ModelForecast(-1, convertDate(dt),
+        return ModelForecast(-1, dt,
                 weather[0].description,
                 temp.max.toInt(),
                 temp.min.toInt(),
                 generateIconUrl(weather[0].icon))
-    }
-
-    private fun convertDate(date: Long): String {
-        val df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault())
-        return df.format(date * 1000)
     }
 
     private fun generateIconUrl(iconCode: String): String = "http://openweathermap.org/img/w/$iconCode.png"
