@@ -31,6 +31,7 @@ class ForecastListAdapter(val weekForecast: ForecastList, val itemClick: (Foreca
 
     class ViewHolder(view: View, val itemClick: (Forecast) -> Unit) : RecyclerView.ViewHolder(view) {
         fun bindForecast(forecast: Forecast) {
+
             with(forecast) {
                 itemView.date.text = date
                 itemView.description.text = description

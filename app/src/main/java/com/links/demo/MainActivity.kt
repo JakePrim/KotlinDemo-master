@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 //        main_text.text = person.pritln(5, 5)
 //        niceToast("Hello")
         initRecycleList()
-
+        getData()
 //        jibenleixing()
     }
 
@@ -36,13 +36,8 @@ class MainActivity : AppCompatActivity() {
         forecast_list.layoutManager = LinearLayoutManager(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        getData()
-    }
-
     private fun getData() = async(UI) {
-        val result = bg { RequestForecastCommand("94043").execute() } //在后台处理网络请求
+        val result = bg { RequestForecastCommand(94043).execute() } //在后台处理网络请求
         longToast("getDataSuccess")
         updateUI(result.await())
     }
@@ -54,14 +49,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    /**
-     * ManagedSqliteOpenHelper
-     * 数据库
-     */
-//    public fun <T> use(f: SQLiteDatabase.() -> T): T{
-//        return openDataB
-//    }
 
     /**
      * 得到一个 list

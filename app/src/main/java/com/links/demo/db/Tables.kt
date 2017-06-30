@@ -17,20 +17,20 @@ package com.links.demo.db
 object CityForecastTable {
     val NAME = "CityForecast"
     val ID = "_id"
-    val CITY = "_city"
-    val COUNTRY = "_country"
+    val CITY = "city"
+    val COUNTRY = "country"
 }
 
 /**
  * 天气表
  */
 object DayForecastTable {
-    val NAME = "DayForecastTable"
+    val NAME = "DayForecastTables"
     val ID = "_id"
-    val DATE = "_date"
-    val DECRIPTION = "_decription"
-    val HIGH = "_high"
-    val LOW = "_low"
-    val ICON = "_icon"
-    val CITY_ID = "_city_id"
+    val DATE = "date"
+    val DESCRIPTION = "description"
+    val HIGH = "high"
+    val LOW = "low"
+    val ICON = "icon"
+    val CITY_ID = "cityId"
 }

@@ -17,13 +17,14 @@ import org.jetbrains.anko.db.*
  * 修订历史：
  * ================================================
  */
-class ForecastDBHelper(ctx: Context = KotlinApp.instances) : ManagedSQLiteOpenHelper(KotlinApp.instances, ForecastDBHelper.DB_NAME, null, ForecastDBHelper.DB_VERSION) {
+class ForecastDBHelper(ctx: Context = KotlinApp.instances) : ManagedSQLiteOpenHelper(ctx, ForecastDBHelper.DB_NAME, null, ForecastDBHelper.DB_VERSION) {
 
 
     /**
      * 创建数据库
      */
-    override fun onCreate(db: SQLiteDatabase?) {
+    override fun onCreate(db: SQLiteDatabase) {
+        println("创建数据库")
         /**
          *第一个参数是表的名称
          *第二个参数，当是true的时候，创建之前会检查这个表是否存在。
@@ -36,18 +37,20 @@ class ForecastDBHelper(ctx: Context = KotlinApp.instances) : ManagedSQLiteOpenHe
          * 它作为第一参数的扩展函数，接收另外一个对象作为参数，把两者组装并返回一个Pair
          * public fun <A, B> A.to(that: B): Pair<A, B> = Pair(this, that)
          */
-        db?.createTable(CityForecastTable.NAME, true
-                , CityForecastTable.ID to INTEGER + PRIMARY_KEY
-                , CityForecastTable.CITY to TEXT
-                , CityForecastTable.COUNTRY to TEXT)
+        db.createTable(CityForecastTable.NAME, true,
+                CityForecastTable.ID to INTEGER + PRIMARY_KEY,
+                CityForecastTable.CITY to TEXT,
+                CityForecastTable.COUNTRY to TEXT)
 
-        db?.createTable(DayForecastTable.NAME, true, DayForecastTable.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT
-                , DayForecastTable.CITY_ID to INTEGER
-                , DayForecastTable.DECRIPTION to TEXT
-                , DayForecastTable.HIGH to INTEGER
-                , DayForecastTable.LOW to INTEGER
-                , DayForecastTable.ICON to TEXT
-                , DayForecastTable.DATE to INTEGER)
+        db.createTable(DayForecastTable.NAME, true,
+                //                DayForecastTable.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+                DayForecastTable.DATE to INTEGER,
+                DayForecastTable.DESCRIPTION to TEXT,
+                DayForecastTable.HIGH to INTEGER,
+                DayForecastTable.LOW to INTEGER,
+                DayForecastTable.ICON to TEXT,
+                DayForecastTable.CITY_ID to INTEGER
+        )
     }
 
     /**
@@ -57,15 +60,17 @@ class ForecastDBHelper(ctx: Context = KotlinApp.instances) : ManagedSQLiteOpenHe
      * 我们只是把我们数据库作为一个缓存，所以这是一个简单安全的方法保证我们的表会如我们所期望的那样被重建。
      * 如果我有很重要的数据需要保留，我们就需要优化onUpgrade的代码，让它根据数据库版本来做相应的数据转移。
      */
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.dropTable(CityForecastTable.NAME, true)
-        db?.dropTable(DayForecastTable.NAME, true)
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        println("数据库升级")
+        db.dropTable(CityForecastTable.NAME, true)
+        db.dropTable(DayForecastTable.NAME, true)
         onCreate(db)
     }
 
     companion object {
+
         val DB_NAME = "forecast.db"
-        val DB_VERSION = 1
+        val DB_VERSION = 9
         /**
          * instance这个属性使用了lazy委托，它表示直到它真的被调用才会被创建。
          * 用这种方法，如果数据库从来没有被使用，我们没有必要去创建这个对象。

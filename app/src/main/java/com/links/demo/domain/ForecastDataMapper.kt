@@ -14,8 +14,8 @@ import com.links.demo.domain.Forecast as ModelForecast
  * 数据处理类
  */
 class ForecastDataMapper {
-    fun convertFromDataModel(forecast: ForecastResult): ForecastList {
-        return ForecastList(forecast.city.name, forecast.city.country, convertForecastListToDomain(forecast.list))
+    fun convertFromDataModel(forecast: ForecastResult): ForecastList = with(forecast) {
+        return ForecastList(city.id, city.name, city.country, convertForecastListToDomain(list))
     }
 
 
@@ -30,12 +30,12 @@ class ForecastDataMapper {
         return list.map { convertForecastItemToDomain(it) }
     }
 
-    private fun convertForecastItemToDomain(forecast: Forecast): ModelForecast {
-        return ModelForecast(convertDate(forecast.dt),
-                forecast.weather[0].description,
-                forecast.temp.max.toInt(),
-                forecast.temp.min.toInt(),
-                generateIconUrl(forecast.weather[0].icon))
+    private fun convertForecastItemToDomain(forecast: Forecast): ModelForecast = with(forecast) {
+        return ModelForecast(-1, convertDate(dt),
+                weather[0].description,
+                temp.max.toInt(),
+                temp.min.toInt(),
+                generateIconUrl(weather[0].icon))
     }
 
     private fun convertDate(date: Long): String {
